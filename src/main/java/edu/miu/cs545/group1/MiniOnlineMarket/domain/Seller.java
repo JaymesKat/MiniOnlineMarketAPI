@@ -22,4 +22,9 @@ public class Seller extends Person {
     @JoinColumn(name="seller_id")
     List<Sale> sales;
 
+    @ManyToMany
+    @JoinTable(name="seller_followers",
+            joinColumns = {@JoinColumn(name = "seller_id")},
+            inverseJoinColumns = {@JoinColumn(name = "buyer_id")})
+    List<Buyer> followers;
 }

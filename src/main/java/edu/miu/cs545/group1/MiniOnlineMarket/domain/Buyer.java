@@ -23,4 +23,7 @@ public class Buyer extends Person {
     @NotNull @Valid
     private Address billingAddress;
 
+    @ManyToMany(mappedBy="followers")
+    List<Seller> followees;
+
 }
