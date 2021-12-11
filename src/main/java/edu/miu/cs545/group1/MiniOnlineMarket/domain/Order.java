@@ -3,6 +3,7 @@ package edu.miu.cs545.group1.MiniOnlineMarket.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -19,6 +20,8 @@ public class Order {
     private Long id;
 
     private OrderStatus status;
+
+    @DateTimeFormat(pattern = "MM-dd-yyyy")
     private LocalDate dateCreated;
 
     @OneToMany(mappedBy="order", cascade = CascadeType.ALL)
