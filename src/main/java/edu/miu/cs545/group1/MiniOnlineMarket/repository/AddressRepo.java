@@ -1,4 +1,9 @@
 package edu.miu.cs545.group1.MiniOnlineMarket.repository;
 
-public interface AddressRepo {
+import edu.miu.cs545.group1.MiniOnlineMarket.domain.Address;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface AddressRepo extends JpaRepository<Address, Long> {
 }
