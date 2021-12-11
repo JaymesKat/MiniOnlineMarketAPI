@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 import org.apache.tomcat.jni.Address;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 @Entity
 @Data
@@ -16,9 +19,12 @@ public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
+    @NotNull
     private String firstName;
+    @NotNull
     private String lastName;
+    @Email @NotNull
     private String email;
+    @Pattern(regexp = "[1-9]")
     private String phone;
 }

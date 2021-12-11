@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -14,9 +16,11 @@ import java.util.List;
 public class Buyer extends Person {
 
     @OneToOne
+    @NotNull @Valid
     private Address shippingAddress;
 
     @OneToOne
+    @NotNull @Valid
     private Address billingAddress;
 
 }
