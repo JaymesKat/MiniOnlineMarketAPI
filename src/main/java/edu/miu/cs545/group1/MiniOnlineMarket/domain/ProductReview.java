@@ -22,7 +22,8 @@ public class ProductReview {
     private String comments;
     private boolean isApproved;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name="product_id")
     private Product product;
 
     @OneToOne

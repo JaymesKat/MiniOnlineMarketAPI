@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Data
@@ -32,4 +33,7 @@ public class Product {
     @ManyToOne
     @JoinColumn(name="seller_id")
     private Seller seller;
+
+    @OneToMany(mappedBy="product")
+    List<ProductReview> reviews;
 }
