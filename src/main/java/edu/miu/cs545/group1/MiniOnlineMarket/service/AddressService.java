@@ -8,6 +8,6 @@ import java.util.List;
 public interface AddressService {
     public List<Address> findAll();
     Address findById(Long id);
-    void updateAddress(Long id, Address product);
+    void updateAddress(Long id, Address address);
     void deleteAddress(Long id);
 }
