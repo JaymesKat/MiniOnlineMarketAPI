@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 
 @Entity
 @Data
@@ -14,6 +15,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
+
+    @Email
+    private String email;
     private String password;
 
     @Enumerated(EnumType.STRING)
