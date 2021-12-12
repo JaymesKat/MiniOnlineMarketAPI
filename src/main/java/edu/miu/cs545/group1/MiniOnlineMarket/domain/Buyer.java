@@ -16,11 +16,11 @@ import java.util.List;
 public class Buyer extends Person {
 
     @OneToOne
-    @NotNull @Valid
+    @Valid
     private Address shippingAddress;
 
     @OneToOne
-    @NotNull @Valid
+    @Valid
     private Address billingAddress;
 
     @ManyToMany(mappedBy="followers")

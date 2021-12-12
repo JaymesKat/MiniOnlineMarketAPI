@@ -30,4 +30,12 @@ public enum UserRole {
         permissions.add(new SimpleGrantedAuthority("ROLE_" + this.name()));
         return permissions;
     }
+
+        static public boolean isValid(String aRole) {
+            UserRole[] roles = UserRole.values();
+            for (UserRole role : roles)
+                if (role.name().equals(aRole))
+                    return true;
+            return false;
+        }
 }

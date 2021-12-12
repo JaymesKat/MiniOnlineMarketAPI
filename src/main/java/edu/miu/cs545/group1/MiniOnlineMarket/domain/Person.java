@@ -1,8 +1,6 @@
 package edu.miu.cs545.group1.MiniOnlineMarket.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.apache.tomcat.jni.Address;
 
 import javax.persistence.*;
@@ -25,6 +23,10 @@ public class Person {
     private String lastName;
     @Email @NotNull
     private String email;
-    @Pattern(regexp = "[1-9]")
+    @Pattern(regexp = "[0-9\\+]+")
     private String phone;
+
+    @OneToOne
+    @JoinColumn(name="user_id")
+    private User user;
 }
