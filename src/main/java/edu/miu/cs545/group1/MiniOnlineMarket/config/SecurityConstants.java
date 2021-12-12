@@ -6,5 +6,6 @@ public class SecurityConstants {
     public static final int PASSWORD_ENCODER_STRENGTH = 10;
     public static final String H2_CONSOLE_URL = "/h2-console/**";
     public static String LOGIN_URL = "/api/auth/login";
+    public static String REGISTER_URL = "/api/auth/register";
     public static String ADMIN_MANAGEMENT_ENDPOINTS = "/management/api/**";
 }
