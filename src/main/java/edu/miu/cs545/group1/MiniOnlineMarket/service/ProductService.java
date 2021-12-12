@@ -9,5 +9,5 @@ public interface ProductService {
     Product findById(Long id);
     void updateProduct(Long id, Product product);
     void deleteProduct(Long id);
-    Double calcAvgRating();
+    Double calcAvgRating(Long id);
 }
