@@ -1,6 +1,7 @@
 package edu.miu.cs545.group1.MiniOnlineMarket.controller;
 
 import edu.miu.cs545.group1.MiniOnlineMarket.domain.Buyer;
+import edu.miu.cs545.group1.MiniOnlineMarket.domain.Order;
 import edu.miu.cs545.group1.MiniOnlineMarket.domain.Seller;
 import edu.miu.cs545.group1.MiniOnlineMarket.service.BuyerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +22,16 @@ public class BuyerController {
     public BuyerController(BuyerService buyerService) {
         this.buyerService = buyerService;
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<Buyer> getBuyer(@PathVariable("id") Long buyerId){
         return new ResponseEntity(buyerService.findById(buyerId), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/orders")
+    public ResponseEntity<List<Order>> getOrderHistory(@PathVariable("id") Long id){
+        List<Order> buyerOrders = buyerService.getBuyerOrders(id);
+        return new ResponseEntity<>(buyerOrders, HttpStatus.OK);
     }
 
     @GetMapping("/{id}/followees/")

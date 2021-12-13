@@ -8,6 +8,7 @@ import edu.miu.cs545.group1.MiniOnlineMarket.domain.Seller;
 import edu.miu.cs545.group1.MiniOnlineMarket.repository.BuyerRepo;
 import edu.miu.cs545.group1.MiniOnlineMarket.repository.SellerRepo;
 import edu.miu.cs545.group1.MiniOnlineMarket.service.BuyerService;
+import edu.miu.cs545.group1.MiniOnlineMarket.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +20,13 @@ public class BuyerServiceImpl implements BuyerService {
 
     private BuyerRepo buyerRepo;
     private SellerRepo sellerRepo;
+    private OrderService orderService;
 
     @Autowired
-    public BuyerServiceImpl(BuyerRepo buyerRepo, SellerRepo sellerRepo) {
+    public BuyerServiceImpl(BuyerRepo buyerRepo, SellerRepo sellerRepo, OrderService orderService) {
         this.buyerRepo = buyerRepo;
         this.sellerRepo = sellerRepo;
+        this.orderService = orderService;
     }
 
 
@@ -70,5 +73,12 @@ public class BuyerServiceImpl implements BuyerService {
     @Override
     public Order createOrder(Cart cart) {
         return null;
+    }
+
+    @Override
+    public List<Order> getBuyerOrders(Long id) {
+        Buyer buyer = findById(id);
+        List<Order> orders = orderService.findBuyerOrderHistory(buyer);
+        return orders;
     }
 }
