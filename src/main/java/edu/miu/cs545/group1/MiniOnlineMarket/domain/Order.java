@@ -1,12 +1,11 @@
 package edu.miu.cs545.group1.MiniOnlineMarket.domain;
 
+import edu.miu.cs545.group1.MiniOnlineMarket.util.LocalDateTimeAttributeConverter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -24,6 +23,7 @@ public class Order {
     private OrderStatus status;
 
 //    @DateTimeFormat(pattern = "MM-dd-yyyy hh:mm:ss")
+    @Convert(converter = LocalDateTimeAttributeConverter.class)
     private LocalDateTime dateCreated;
 
     @OneToMany(mappedBy="order", cascade = CascadeType.ALL)

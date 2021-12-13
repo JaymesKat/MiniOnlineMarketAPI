@@ -12,10 +12,10 @@ INSERT into PRODUCT (id, code, date_created, description, price, quantity, title
 INSERT into PRODUCT (id, code, date_created, description, price, quantity, title, seller_id) VALUES (112, 'ABC124', '2021-12-09', 'Brand new 13" screen', 1999.99, 100, 'MacBook Air', 111);
 INSERT into PRODUCT (id, code, date_created, description, price, quantity, title, seller_id) VALUES (113, 'XYZ124', '2021-12-09', 'Powerful high-end', 999.99, 30, 'iPhone 12', 111);
 
-INSERT into ORDERS (id, date_created, status, buyer_id) VALUES (121, '2021-12-13 08:33:04', 'PENDING', 112);
-INSERT into ORDERS (id, date_created, status, buyer_id) VALUES (122, '2021-12-14 11:05:12', 'SHIPPED', 112);
-INSERT into ORDERS (id, date_created, status, buyer_id) VALUES (123, '2021-12-10 12:38:03', 'CANCELLED', 112);
-INSERT into ORDERS (id, date_created, status, buyer_id) VALUES (124, '2021-12-14 23:45:15', 'DELIVERED', 112);
+INSERT into ORDERS (id, date_created, status, buyer_id) VALUES (121, '2021-12-13T08:33:04', 'PENDING', 112);
+INSERT into ORDERS (id, date_created, status, buyer_id) VALUES (122, '2021-12-14T11:05:12', 'SHIPPED', 112);
+INSERT into ORDERS (id, date_created, status, buyer_id) VALUES (123, '2021-12-10T12:38:03', 'CANCELLED', 112);
+INSERT into ORDERS (id, date_created, status, buyer_id) VALUES (124, '2021-12-14T23:45:15', 'DELIVERED', 112);
 
 INSERT into ORDER_ITEM (id, quantity, order_id, product_id) VALUES (131, 2, 121, 111);
 INSERT into ORDER_ITEM (id, quantity, order_id, product_id) VALUES (132, 1, 121, 113);
