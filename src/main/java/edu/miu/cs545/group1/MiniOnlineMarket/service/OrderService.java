@@ -1,5 +1,6 @@
 package edu.miu.cs545.group1.MiniOnlineMarket.service;
 
+import edu.miu.cs545.group1.MiniOnlineMarket.domain.Buyer;
 import edu.miu.cs545.group1.MiniOnlineMarket.domain.Order;
 import edu.miu.cs545.group1.MiniOnlineMarket.domain.Order;
 
@@ -13,4 +14,5 @@ public interface OrderService {
     void deleteOrder(Long id);
     void shipOrder(Long id);
     void cancelOrder(Long id);
+    List<Order> findBuyerOrderHistory(Buyer buyer);
 }

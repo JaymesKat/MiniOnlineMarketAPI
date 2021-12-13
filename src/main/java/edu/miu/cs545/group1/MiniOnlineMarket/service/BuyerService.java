@@ -11,4 +11,6 @@ public interface BuyerService {
     List<Seller> getFollowees(Long buyerId);
     void registerBuyer(Buyer buyer);
     Order createOrder(Cart cart);
+
+    List<Order> getBuyerOrders(Long id);
 }

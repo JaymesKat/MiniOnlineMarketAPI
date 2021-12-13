@@ -1,5 +1,7 @@
 package edu.miu.cs545.group1.MiniOnlineMarket.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,6 +22,7 @@ public class OrderItem {
 
     @ManyToOne
     @JoinColumn(name="order_id")
+    @JsonIgnore
     private Order order;
 
     @OneToOne
