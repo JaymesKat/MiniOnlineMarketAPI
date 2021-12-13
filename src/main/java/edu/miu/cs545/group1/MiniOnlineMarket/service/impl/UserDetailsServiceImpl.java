@@ -1,4 +1,4 @@
-package edu.miu.cs545.group1.MiniOnlineMarket.service;
+package edu.miu.cs545.group1.MiniOnlineMarket.service.impl;
 
 import edu.miu.cs545.group1.MiniOnlineMarket.auth.MyUserDetails;
 import edu.miu.cs545.group1.MiniOnlineMarket.domain.User;

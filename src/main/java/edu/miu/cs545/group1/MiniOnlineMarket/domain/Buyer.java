@@ -26,4 +26,14 @@ public class Buyer extends Person {
     @ManyToMany(mappedBy="followers")
     List<Seller> followees;
 
+    public void addFollowee(Seller seller){
+        followees.add(seller);
+        seller.addFollower(this);
+    }
+
+    public void removeFollowee(Seller seller){
+        followees.remove(seller);
+        seller.removeFollower(this);
+    }
+
 }

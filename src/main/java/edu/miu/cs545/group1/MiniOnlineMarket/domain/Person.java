@@ -1,5 +1,6 @@
 package edu.miu.cs545.group1.MiniOnlineMarket.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.apache.tomcat.jni.Address;
 
@@ -27,6 +28,6 @@ public class Person {
     private String phone;
 
     @OneToOne
-    @JoinColumn(name="user_id")
+    @JoinColumn(name="user_id") @JsonIgnore
     private User user;
 }

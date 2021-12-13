@@ -1,4 +1,4 @@
-package edu.miu.cs545.group1.MiniOnlineMarket.service;
+package edu.miu.cs545.group1.MiniOnlineMarket.service.impl;
 
 import edu.miu.cs545.group1.MiniOnlineMarket.config.UserRole;
 import edu.miu.cs545.group1.MiniOnlineMarket.domain.Buyer;
@@ -9,6 +9,7 @@ import edu.miu.cs545.group1.MiniOnlineMarket.dto.RegistrationResponseDTO;
 import edu.miu.cs545.group1.MiniOnlineMarket.repository.BuyerRepo;
 import edu.miu.cs545.group1.MiniOnlineMarket.repository.SellerRepo;
 import edu.miu.cs545.group1.MiniOnlineMarket.repository.UserRepo;
+import edu.miu.cs545.group1.MiniOnlineMarket.service.AuthService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
