@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -19,10 +20,11 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    @DateTimeFormat(pattern = "MM-dd-yyyy")
-    private LocalDate dateCreated;
+//    @DateTimeFormat(pattern = "MM-dd-yyyy hh:mm:ss")
+    private LocalDateTime dateCreated;
 
     @OneToMany(mappedBy="order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;

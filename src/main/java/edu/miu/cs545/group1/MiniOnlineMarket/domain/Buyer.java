@@ -26,6 +26,10 @@ public class Buyer extends Person {
     @ManyToMany(mappedBy="followers")
     List<Seller> followees;
 
+    @OneToMany
+    @JoinColumn(name="buyer_id")
+    List<Order> orders;
+
     public void addFollowee(Seller seller){
         followees.add(seller);
         seller.addFollower(this);
