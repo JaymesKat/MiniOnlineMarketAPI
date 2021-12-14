@@ -1,25 +1,25 @@
 package edu.miu.cs545.group1.MiniOnlineMarket.controller;
 
+import edu.miu.cs545.group1.MiniOnlineMarket.auth.MyUserDetails;
+import edu.miu.cs545.group1.MiniOnlineMarket.config.UserRole;
 import edu.miu.cs545.group1.MiniOnlineMarket.domain.*;
 import edu.miu.cs545.group1.MiniOnlineMarket.dto.AddToCartDto;
+import edu.miu.cs545.group1.MiniOnlineMarket.dto.CartDto;
 import edu.miu.cs545.group1.MiniOnlineMarket.dto.UpdateCartDto;
-import edu.miu.cs545.group1.MiniOnlineMarket.service.BuyerService;
-import edu.miu.cs545.group1.MiniOnlineMarket.service.CartItemService;
-import edu.miu.cs545.group1.MiniOnlineMarket.service.ProductService;
-import edu.miu.cs545.group1.MiniOnlineMarket.service.CartService;
+import edu.miu.cs545.group1.MiniOnlineMarket.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/carts")
+@RequestMapping("/api/v1/cart")
 public class CartController {
     @Autowired
     private CartService cartService;
-
-    @Autowired
-    private CartItemService cartItemService;
 
     @Autowired
     private ProductService productService;
@@ -28,28 +28,35 @@ public class CartController {
     private BuyerService buyerService;
 
     @Autowired
-    private UserDetailsService userDetailsService;
+    private UserService userService;
 
-    @PostMapping("/{buyerId}/items")
-    public  void addToCart(@RequestBody AddToCartDto addToCartDto, Authentication auth, @PathVariable Long buyerId) {
-//        String username = auth.getPrincipal().toString();
-//        User user = ((MyUserDetails)userDetailsService.loadUserByUsername(username)).getUser();
-
-        Product product = productService.findById(addToCartDto.getProductId());
-        Buyer buyer = buyerService.findById(buyerId);
+    @GetMapping
+    public ResponseEntity<Cart> getCart(Authentication auth){
+        User user = userService.getLoggedInUser(auth);
+        Buyer buyer = buyerService.findByUser(user);
         Cart cart = cartService.findByOwner(buyer);
-        if(cart==null) cart = new Cart(buyer);
-        cartService.addItemToCart(addToCartDto, cart, product);
+        return new ResponseEntity<>(cart, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{cartId}/products/{productId}")
-    public void removeItemFromCart(@PathVariable Long cartId,@PathVariable Long productId) {
-        cartService.removeItemFromCart(cartId, productId);
+    @PostMapping()
+    public ResponseEntity<Cart> addToCart(@RequestBody AddToCartDto addToCartDto, Authentication auth) {
+        Cart cart = cartService.getLoggedInUserCart(auth);
+        Product product = productService.findById(addToCartDto.getProductId());
+        cart = cartService.addItemToCart(addToCartDto, cart, product);
+        return new ResponseEntity<>(cart, HttpStatus.OK);
     }
 
-    @PutMapping("/{cartId}")
-    public void updateCart(@PathVariable Long cartId,@RequestBody UpdateCartDto cartDto) {
-        Cart cart = cartService.findById(cartId);
-        cartService.updateCartDto(cart, cartDto);
+    @DeleteMapping("/remove/{productId}")
+    public ResponseEntity<Cart> removeItemFromCart(Authentication auth, @PathVariable Long productId) {
+        Cart cart = cartService.getLoggedInUserCart(auth);
+        cart = cartService.removeItemFromCart(cart, productId);
+        return new ResponseEntity<>(cart, HttpStatus.OK);
+    }
+
+    @PutMapping
+    public ResponseEntity<Cart> updateCart(Authentication auth,@RequestBody UpdateCartDto cartDto) {
+        Cart cart = cartService.getLoggedInUserCart(auth);
+        cart = cartService.updateCart(cart, cartDto);
+        return new ResponseEntity<>(cart, HttpStatus.OK);
     }
 }

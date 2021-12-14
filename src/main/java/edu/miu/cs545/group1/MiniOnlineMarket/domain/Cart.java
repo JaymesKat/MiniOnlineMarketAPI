@@ -1,5 +1,7 @@
 package edu.miu.cs545.group1.MiniOnlineMarket.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import edu.miu.cs545.group1.MiniOnlineMarket.util.LocalDateTimeAttributeConverter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,11 +25,12 @@ public class Cart {
     private Long id;
 
     @Column(name = "created_date")
-    @DateTimeFormat(pattern = "MM-dd-yyyy")
-    private LocalDate dateCreated;
+    @Convert(converter = LocalDateTimeAttributeConverter.class)
+    private LocalDateTime dateCreated;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="owner_id")
+    @JsonIgnore
     private Buyer owner;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
