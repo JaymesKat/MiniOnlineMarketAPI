@@ -30,10 +30,11 @@ public class CartController {
     @Autowired
     private UserDetailsService userDetailsService;
 
-    @PostMapping("/{buyerId}/addItem")
+    @PostMapping("/{buyerId}/items")
     public  void addToCart(@RequestBody AddToCartDto addToCartDto, Authentication auth, @PathVariable Long buyerId) {
 //        String username = auth.getPrincipal().toString();
 //        User user = ((MyUserDetails)userDetailsService.loadUserByUsername(username)).getUser();
+
         Product product = productService.findById(addToCartDto.getProductId());
         Buyer buyer = buyerService.findById(buyerId);
         Cart cart = cartService.findByOwner(buyer);
@@ -41,7 +42,7 @@ public class CartController {
         cartService.addItemToCart(addToCartDto, cart, product);
     }
 
-    @DeleteMapping("/{cartId}/{productId}")
+    @DeleteMapping("/{cartId}/products/{productId}")
     public void removeItemFromCart(@PathVariable Long cartId,@PathVariable Long productId) {
         cartService.removeItemFromCart(cartId, productId);
     }
