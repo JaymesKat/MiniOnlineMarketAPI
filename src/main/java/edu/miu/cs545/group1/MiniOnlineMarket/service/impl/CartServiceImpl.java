@@ -95,11 +95,5 @@ public class CartServiceImpl implements CartService {
             }
         }
     }
-
-    @Override
-    public void deleteCart(Buyer buyer) {
-        Cart cart = this.findByOwner(buyer);
-        cartRepo.delete(cart);
-    }
 }
 
