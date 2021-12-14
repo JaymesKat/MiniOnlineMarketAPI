@@ -1,5 +1,6 @@
 package edu.miu.cs545.group1.MiniOnlineMarket.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,7 @@ public class Buyer extends Person {
     @Valid
     private Address billingAddress;
 
+    @JsonIgnore
     @ManyToMany(mappedBy="followers")
     List<Seller> followees;
 
