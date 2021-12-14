@@ -1,8 +1,9 @@
-package edu.miu.cs545.group1.MiniOnlineMarket.service;
+package edu.miu.cs545.group1.MiniOnlineMarket.service.impl;
 
 import edu.miu.cs545.group1.MiniOnlineMarket.domain.Product;
 import edu.miu.cs545.group1.MiniOnlineMarket.domain.ProductReview;
 import edu.miu.cs545.group1.MiniOnlineMarket.repository.ProductRepo;
+import edu.miu.cs545.group1.MiniOnlineMarket.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,8 @@ public class ProductServiceImpl implements ProductService {
             productRepo.save(product);
 
     }
-
+    // we should check if the product is in one purchase
+    // if yes we should not delete it
     @Override
     public void deleteProduct(Long id) {
         if(productRepo.findById(id).isPresent())

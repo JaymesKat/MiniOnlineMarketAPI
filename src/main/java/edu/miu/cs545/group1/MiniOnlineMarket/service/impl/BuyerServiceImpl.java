@@ -37,6 +37,11 @@ public class BuyerServiceImpl implements BuyerService {
     }
 
     @Override
+    public Buyer findByEmail(String email) {
+        return buyerRepo.findByEmail(email);
+    }
+
+    @Override
     public void followSeller(Long buyerId, Long sellerId) {
         Buyer buyer = findById(buyerId);
         Seller seller = sellerRepo.findById(sellerId)

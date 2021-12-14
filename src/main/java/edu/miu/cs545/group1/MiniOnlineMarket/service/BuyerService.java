@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface BuyerService {
     Buyer findById(Long id);
+    Buyer findByEmail(String email);
     void followSeller(Long buyerId, Long sellerId);
     void unFollowSeller(Long buyerId, Long sellerId);
     List<Seller> getFollowees(Long buyerId);
