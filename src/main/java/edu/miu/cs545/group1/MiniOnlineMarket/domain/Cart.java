@@ -25,7 +25,7 @@ public class Cart {
     @DateTimeFormat(pattern = "MM-dd-yyyy")
     private LocalDate dateCreated;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name="owner_id")
     private Buyer owner;
 
