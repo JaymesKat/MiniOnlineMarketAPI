@@ -16,11 +16,11 @@ import java.util.List;
 @AllArgsConstructor
 public class Buyer extends Person {
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @Valid
     private Address shippingAddress;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @Valid
     private Address billingAddress;
 
