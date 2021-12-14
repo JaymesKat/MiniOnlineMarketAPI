@@ -51,10 +51,12 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
         httpSecurity
                 .csrf().disable()
                 .authorizeRequests()
+//                .antMatchers("/api/v1/**").permitAll()
                 .antMatchers(SecurityConstants.REGISTER_URL).permitAll()
                 .antMatchers(SecurityConstants.LOGIN_URL).permitAll()
                 .antMatchers(SecurityConstants.H2_CONSOLE_URL).permitAll()
-                .antMatchers(SecurityConstants.ADMIN_MANAGEMENT_ENDPOINTS).hasRole(UserRole.ADMIN.name())
+                .antMatchers(SecurityConstants.ADMIN_MANAGEMENT_ENDPOINTS).hasAuthority(SecurityConstants.ROLE_ADMIN)
+                .antMatchers(SecurityConstants.CART_ENDPOINTS).hasAuthority(SecurityConstants.ROLE_BUYER)
                 .anyRequest()
                 .authenticated()
                 .and()

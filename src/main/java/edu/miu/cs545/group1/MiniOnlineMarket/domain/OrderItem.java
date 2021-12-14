@@ -19,6 +19,7 @@ public class OrderItem {
     private Long id;
 
     private int quantity;
+    private OrderStatus status;
 
     @ManyToOne
     @JoinColumn(name="order_id")
@@ -28,4 +29,9 @@ public class OrderItem {
     @OneToOne
     @JoinColumn(name="product_id")
     private Product product;
+
+    @PrePersist
+    public void prePersist() {
+        if(status == null) status = OrderStatus.PENDING;
+    }
 }

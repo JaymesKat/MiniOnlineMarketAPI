@@ -29,6 +29,8 @@ public class ProductServiceImpl implements ProductService {
         return productRepo.findById(id).get();
     }
 
+    // we should check if the product is in one purchase
+    // if yes we should not delete it
     @Override
     public void updateProduct(Long id, Product product) {
         Product temp = productRepo.findById(id).orElse(null);
@@ -39,20 +41,15 @@ public class ProductServiceImpl implements ProductService {
             temp.setPrice(product.getPrice());
             temp.setQuantity(product.getQuantity());
             temp.setDateCreated(product.getDateCreated());
-            //temp.setSeller(product.getSeller());
-
-                      
             productRepo.save(temp);
         }
-
-
     }
 
     @Override
     public void deleteProduct(Long id) {
         Product tempProduct = productRepo.findById(id).get();
         Integer count = saleRepo.countAllByProduct(tempProduct);
-        System.out.println(count);
+
         if(productRepo.findById(id).isPresent() && count == 0)
             productRepo.delete(productRepo.findById(id).get());
     }
@@ -89,5 +86,4 @@ public class ProductServiceImpl implements ProductService {
         productToUpdate.setQuantity(currentQuantity - quantity);
         updateProduct(productToUpdate.getId(), productToUpdate);
     }
-
 }
