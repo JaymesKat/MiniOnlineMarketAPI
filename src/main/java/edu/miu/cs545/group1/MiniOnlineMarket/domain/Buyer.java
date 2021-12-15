@@ -3,18 +3,20 @@ package edu.miu.cs545.group1.MiniOnlineMarket.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class Buyer extends Person {
+@NoArgsConstructor
+public class Buyer extends Person implements Serializable {
 
     @OneToOne
     @Valid
@@ -29,10 +31,11 @@ public class Buyer extends Person {
     List<Seller> followees;
 
     @OneToMany
-    @JoinColumn(name="buyer_id")
+    @JoinColumn(name="buyer_id", referencedColumnName="id")
     List<Order> orders;
 
-    @OneToOne(mappedBy="owner")
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name="cart_id")
     public Cart cart;
 
     public void addFollowee(Seller seller){

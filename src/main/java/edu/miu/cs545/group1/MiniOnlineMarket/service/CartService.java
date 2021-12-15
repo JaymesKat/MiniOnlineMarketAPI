@@ -8,6 +8,7 @@ import edu.miu.cs545.group1.MiniOnlineMarket.dto.AddToCartDto;
 import edu.miu.cs545.group1.MiniOnlineMarket.dto.UpdateCartDto;
 import org.springframework.security.core.Authentication;
 
+import java.util.List;
 
 public interface CartService {
     Cart findByOwner(Buyer buyer);
@@ -18,4 +19,5 @@ public interface CartService {
     Cart removeItemFromCart(Cart cart, Long productId);
     Cart updateCart(Cart cart, UpdateCartDto cartDto);
     Cart getLoggedInUserCart(Authentication auth);
+    Cart addCart(AddToCartDto addToCartDto, Authentication auth);
 }

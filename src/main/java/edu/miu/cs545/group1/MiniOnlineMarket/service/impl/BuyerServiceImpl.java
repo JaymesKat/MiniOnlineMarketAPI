@@ -3,9 +3,9 @@ package edu.miu.cs545.group1.MiniOnlineMarket.service.impl;
 import edu.miu.cs545.group1.MiniOnlineMarket.constants.ErrorMessages;
 import edu.miu.cs545.group1.MiniOnlineMarket.domain.*;
 import edu.miu.cs545.group1.MiniOnlineMarket.repository.BuyerRepo;
+import edu.miu.cs545.group1.MiniOnlineMarket.repository.OrderRepo;
 import edu.miu.cs545.group1.MiniOnlineMarket.repository.SellerRepo;
 import edu.miu.cs545.group1.MiniOnlineMarket.service.BuyerService;
-import edu.miu.cs545.group1.MiniOnlineMarket.service.OrderService;
 import edu.miu.cs545.group1.MiniOnlineMarket.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -19,15 +19,14 @@ public class BuyerServiceImpl implements BuyerService {
 
     private BuyerRepo buyerRepo;
     private SellerRepo sellerRepo;
-    private OrderService orderService;
     private UserService userService;
+    private OrderRepo orderRepo;
 
     @Autowired
-    public BuyerServiceImpl(BuyerRepo buyerRepo,SellerRepo sellerRepo,
-                            OrderService orderService, UserService userService) {
+    public BuyerServiceImpl(BuyerRepo buyerRepo,
+                            SellerRepo sellerRepo,UserService userService) {
         this.buyerRepo = buyerRepo;
         this.sellerRepo = sellerRepo;
-        this.orderService = orderService;
         this.userService = userService;
     }
 
@@ -45,7 +44,7 @@ public class BuyerServiceImpl implements BuyerService {
 
     @Override
     public Buyer findByUser(User user) {
-        return buyerRepo.findByUser(user);
+        return buyerRepo.findByUser(user.getId());
     }
 
     @Override
@@ -84,19 +83,19 @@ public class BuyerServiceImpl implements BuyerService {
     }
 
     @Override
+    public Buyer save(Buyer buyer) {
+        return buyerRepo.save(buyer);
+    }
+
+    @Override
     public void registerBuyer(Buyer buyer) {
         buyerRepo.save(buyer);
     }
 
     @Override
-    public Order createOrder(Cart cart) {
-        return null;
-    }
-
-    @Override
     public List<Order> getBuyerOrders(Long id) {
         Buyer buyer = findById(id);
-        List<Order> orders = orderService.findBuyerOrderHistory(buyer);
+        List<Order> orders = orderRepo.findAllByBuyerOrderByDateCreatedDesc(buyer);
         return orders;
     }
 }
