@@ -47,9 +47,9 @@ public class CartServiceImpl implements CartService {
     public Cart createCart(Buyer buyer) {
         Cart cart = new Cart();
         cart.setDateCreated(LocalDateTime.now());
-        cart.setOwner(buyer);
-        cart = cartRepo.save(cart);
-        return cart;
+        buyer.setCart(cart);
+        Buyer updatedBuyer = buyerService.save(buyer);
+        return updatedBuyer.getCart();
     }
 
     @Override
@@ -62,8 +62,8 @@ public class CartServiceImpl implements CartService {
         CartItem cartItem = new CartItem(product, addToCartDto.getQuantity(), cart);
         List<CartItem> cartItems = cart.getItems();
         for (CartItem item : cartItems) {
-            if (item.getCart() == cart && item.getProduct() == product) {
-                cartItemService.deleteCartItem(cartItem.getId());
+            if (item.getCart().equals(cart) && item.getProduct().equals(product)) {
+                cartItemService.deleteByProductId(cartItem.getProduct().getId());
             }
         }
         cart.addCartItem(cartItem);
@@ -91,7 +91,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public Cart findByOwner(Buyer buyer) {
-        return cartRepo.findByOwner(buyer).orElse(createCart(buyer));
+        return buyer.getCart();
     }
 
     @Override
@@ -110,10 +110,21 @@ public class CartServiceImpl implements CartService {
         return cart;
     }
 
-
     public Cart getLoggedInUserCart(Authentication auth) {
         Buyer buyer = buyerService.getLoggedInBuyer(auth);
-        return findByOwner(buyer);
+        Cart cart = findByOwner(buyer);
+        System.out.println("cart: "+ cart.getId());
+        if(cart==null) {
+            cart = createCart(buyer);
+        }
+        return cart;
+    }
+
+    public Cart addCart(AddToCartDto addToCartDto, Authentication auth) {
+        Cart cart = getLoggedInUserCart(auth);
+        Product product = productService.findById(addToCartDto.getProductId());
+        cart = addItemToCart(addToCartDto, cart, product);
+        return cart;
     }
 
 }

@@ -13,7 +13,7 @@ public interface BuyerService {
     void unFollowSeller(Long buyerId, Long sellerId);
     List<Seller> getFollowees(Long buyerId);
     void registerBuyer(Buyer buyer);
-    Order createOrder(Cart cart);
     List<Order> getBuyerOrders(Long id);
     public Buyer getLoggedInBuyer(Authentication auth);
+    Buyer save(Buyer buyer);
 }

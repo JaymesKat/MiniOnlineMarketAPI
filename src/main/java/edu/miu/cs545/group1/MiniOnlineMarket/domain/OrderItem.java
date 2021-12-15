@@ -19,6 +19,8 @@ public class OrderItem {
     private Long id;
 
     private int quantity;
+
+    @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
     @ManyToOne

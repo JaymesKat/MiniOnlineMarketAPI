@@ -1,6 +1,7 @@
 package edu.miu.cs545.group1.MiniOnlineMarket.service.impl;
 
 import edu.miu.cs545.group1.MiniOnlineMarket.domain.*;
+import edu.miu.cs545.group1.MiniOnlineMarket.repository.CartRepo;
 import edu.miu.cs545.group1.MiniOnlineMarket.repository.OrderItemRepo;
 import edu.miu.cs545.group1.MiniOnlineMarket.repository.OrderRepo;
 import edu.miu.cs545.group1.MiniOnlineMarket.service.CartService;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,40 +21,35 @@ public class OrderServiceImpl implements OrderService {
     private CartService cartService;
 
     @Autowired
-    private OrderRepo orderRepository;
+    private CartRepo cartRepo;
 
     @Autowired
-    private OrderItemRepo orderItemsRepository;
+    private OrderRepo orderRepository;
 
-    @Override
-    public List<Order> findBuyerOrderHistory(Buyer buyer) {
-        return null;
-    }
 
     @Override
     public Order placeOrder(Buyer user) {
         Cart cart = cartService.findByOwner(user);
-        List<CartItem> cartItemList = cart.getItems(); // first let get cart items for the user
+        List<CartItem> cartItemList = cart.getItems();
 
         // create the order and save it
         Order newOrder = new Order();
         newOrder.setDateCreated(LocalDateTime.now());
         newOrder.setBuyer(user);
         newOrder.setStatus(OrderStatus.PENDING);
-        orderRepository.save(newOrder);
 
+        List<OrderItem> orderItems = new ArrayList<OrderItem>();
         for (CartItem cartItem : cartItemList) {
-            // create orderItem and save each one
             OrderItem orderItem = new OrderItem();
-//                orderItem.setStatus(OrderStatus.PENDING);
             orderItem.setProduct(cartItem.getProduct());
             orderItem.setQuantity(cartItem.getQuantity());
             orderItem.setOrder(newOrder);
-            // add to order item list
-            orderItemsRepository.save(orderItem);
+            orderItems.add(orderItem);
         }
-        //
-        cartService.deleteCart(user);
+        newOrder.setOrderItems(orderItems);
+        newOrder = orderRepository.save(newOrder);
+        cart.setItems(null);
+        cartRepo.save(cart);
         return newOrder;
     }
 
