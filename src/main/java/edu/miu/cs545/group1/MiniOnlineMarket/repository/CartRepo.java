@@ -7,12 +7,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface CartRepo extends JpaRepository<Cart,Long> {
 //
     @Query(value = "SELECT c FROM Cart c WHERE c.owner = :owner")
-    public Cart findByOwner(Buyer owner);
+    public Optional<Cart> findByOwner(Buyer owner);
 
     @Query(value = "SELECT c FROM Cart c WHERE c.owner.id = :ownerId")
     public Cart findByOwnerId(Long ownerId);

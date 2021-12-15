@@ -2,13 +2,16 @@ package edu.miu.cs545.group1.MiniOnlineMarket.service.impl;
 
 import edu.miu.cs545.group1.MiniOnlineMarket.constants.ErrorMessages;
 import edu.miu.cs545.group1.MiniOnlineMarket.domain.*;
+import edu.miu.cs545.group1.MiniOnlineMarket.domain.*;
 import edu.miu.cs545.group1.MiniOnlineMarket.dto.AddressDTO;
 import edu.miu.cs545.group1.MiniOnlineMarket.repository.AddressRepo;
 import edu.miu.cs545.group1.MiniOnlineMarket.repository.BuyerRepo;
 import edu.miu.cs545.group1.MiniOnlineMarket.repository.SellerRepo;
 import edu.miu.cs545.group1.MiniOnlineMarket.service.BuyerService;
 import edu.miu.cs545.group1.MiniOnlineMarket.service.OrderService;
+import edu.miu.cs545.group1.MiniOnlineMarket.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,14 +23,17 @@ public class BuyerServiceImpl implements BuyerService {
     private BuyerRepo buyerRepo;
     private SellerRepo sellerRepo;
     private OrderService orderService;
+    private UserService userService;
     @Autowired
     private AddressRepo addressRepo;
 
     @Autowired
-    public BuyerServiceImpl(BuyerRepo buyerRepo, SellerRepo sellerRepo, OrderService orderService) {
+    public BuyerServiceImpl(BuyerRepo buyerRepo,SellerRepo sellerRepo,
+                            OrderService orderService, UserService userService) {
         this.buyerRepo = buyerRepo;
         this.sellerRepo = sellerRepo;
         this.orderService = orderService;
+        this.userService = userService;
     }
 
 
@@ -43,11 +49,16 @@ public class BuyerServiceImpl implements BuyerService {
     }
 
     @Override
+    public Buyer findByUser(User user) {
+        return buyerRepo.findByUser(user);
+    }
+
+    @Override
     public void followSeller(Long buyerId, Long sellerId) {
         Buyer buyer = findById(buyerId);
         Seller seller = sellerRepo.findById(sellerId)
-                .orElseThrow(() -> new NoSuchElementException(ErrorMessages.SELLER_NOT_FOUND));
-        if (!buyer.getFollowees().contains(seller)) {
+                .orElseThrow(()-> new NoSuchElementException(ErrorMessages.SELLER_NOT_FOUND));
+        if(!buyer.getFollowees().contains(seller)){
             buyer.addFollowee(seller);
             buyerRepo.save(buyer);
         }
@@ -57,9 +68,9 @@ public class BuyerServiceImpl implements BuyerService {
     public void unFollowSeller(Long buyerId, Long sellerId) {
         Buyer buyer = findById(buyerId);
         Seller seller = sellerRepo.findById(sellerId)
-                .orElseThrow(() -> new NoSuchElementException(ErrorMessages.SELLER_NOT_FOUND));
+                .orElseThrow(()-> new NoSuchElementException(ErrorMessages.SELLER_NOT_FOUND));
 
-        if (buyer.getFollowees().contains(seller)) {
+        if(buyer.getFollowees().contains(seller)) {
             buyer.removeFollowee(seller);
             buyerRepo.save(buyer);
         }
@@ -67,8 +78,14 @@ public class BuyerServiceImpl implements BuyerService {
 
     @Override
     public List<Seller> getFollowees(Long buyerId) {
-        Buyer buyer = findById(buyerId);
-        return buyer.getFollowees();
+         Buyer buyer = findById(buyerId);
+         return buyer.getFollowees();
+    }
+
+    public Buyer getLoggedInBuyer(Authentication auth) {
+        User user = userService.getLoggedInUser(auth);
+        Buyer buyer = findByUser(user);
+        return buyer;
     }
 
     @Override

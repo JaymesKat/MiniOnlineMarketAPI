@@ -32,6 +32,9 @@ public class Buyer extends Person {
     @JoinColumn(name="buyer_id")
     List<Order> orders;
 
+    @OneToOne(mappedBy="owner")
+    public Cart cart;
+
     public void addFollowee(Seller seller){
         followees.add(seller);
         seller.addFollower(this);
