@@ -32,7 +32,7 @@ public class Order {
     @OneToMany(mappedBy="order", cascade=CascadeType.ALL)
     private List<OrderItem> orderItems;
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="buyer_id") @JsonIgnore
     private Buyer buyer;
 

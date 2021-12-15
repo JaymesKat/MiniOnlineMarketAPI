@@ -26,36 +26,24 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product findById(Long id) {
-        return productRepo.findById(id).get();
+        return productRepo.findById(id).orElse(null);
     }
 
-    @Override
-    public void updateProduct(Long id, Product product) {
-        if(productRepo.findById(id).isPresent())
-            productRepo.save(product);
-
-    }
     // we should check if the product is in one purchase
     // if yes we should not delete it
-//    @Override
-//    public void deleteProduct(Long id) {
-//        if(productRepo.findById(id).isPresent())
-//        Product temp = productRepo.findById(id).orElse(null);
-//        if(temp != null ){
-//            temp.setTitle(product.getTitle());
-//            temp.setDescription(product.getDescription());
-//            temp.setCode(product.getCode());
-//            temp.setPrice(product.getPrice());
-//            temp.setQuantity(product.getQuantity());
-//            temp.setDateCreated(product.getDateCreated());
-//            //temp.setSeller(product.getSeller());
-//
-//
-//            productRepo.save(temp);
-//        }
-//
-//
-//    }
+    @Override
+    public void updateProduct(Long id, Product product) {
+        Product temp = findById(id);
+        if(temp != null ){
+            temp.setTitle(product.getTitle());
+            temp.setDescription(product.getDescription());
+            temp.setCode(product.getCode());
+            temp.setPrice(product.getPrice());
+            temp.setQuantity(product.getQuantity());
+            temp.setDateCreated(product.getDateCreated());
+            productRepo.save(temp);
+        }
+    }
 
     @Override
     public void deleteProduct(Long id) {

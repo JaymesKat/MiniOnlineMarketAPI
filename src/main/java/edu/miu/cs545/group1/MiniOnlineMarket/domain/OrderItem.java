@@ -21,6 +21,9 @@ public class OrderItem {
     private int quantity;
     private OrderStatus status;
 
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
+
     @ManyToOne
     @JoinColumn(name="order_id")
     @JsonIgnore

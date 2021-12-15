@@ -3,18 +3,21 @@ package edu.miu.cs545.group1.MiniOnlineMarket.service;
 import edu.miu.cs545.group1.MiniOnlineMarket.domain.Buyer;
 import edu.miu.cs545.group1.MiniOnlineMarket.domain.Cart;
 import edu.miu.cs545.group1.MiniOnlineMarket.domain.Product;
+import edu.miu.cs545.group1.MiniOnlineMarket.domain.User;
 import edu.miu.cs545.group1.MiniOnlineMarket.dto.AddToCartDto;
-import edu.miu.cs545.group1.MiniOnlineMarket.dto.CartDto;
 import edu.miu.cs545.group1.MiniOnlineMarket.dto.UpdateCartDto;
+import org.springframework.security.core.Authentication;
 
+import java.util.List;
 
 public interface CartService {
     Cart findByOwner(Buyer buyer);
     Cart findById(Long cartId);
-    void addItemToCart(AddToCartDto addToCartDto, Cart cart, Product product);
-    void removeItemFromCart(Long cartId, Long productId);
-    void deleteCart(Buyer buyer);
-//    void updateCart(Cart cart, AddToCartDto cartDto);
-    Cart updateCartDto(Cart cart, UpdateCartDto cartDto);
-    public Cart findByOwnerId(Long ownerId);
+    Cart createCart(Buyer buyer);
+    Cart getOrCreateCart(Buyer buyer);
+    Cart addItemToCart(AddToCartDto addToCartDto, Cart cart, Product product);
+    Cart removeItemFromCart(Cart cart, Long productId);
+    Cart updateCart(Cart cart, UpdateCartDto cartDto);
+    Cart getLoggedInUserCart(Authentication auth);
+    Cart addCart(AddToCartDto addToCartDto, Authentication auth);
 }

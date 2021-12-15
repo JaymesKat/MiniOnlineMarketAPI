@@ -1,13 +1,15 @@
 package edu.miu.cs545.group1.MiniOnlineMarket.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import edu.miu.cs545.group1.MiniOnlineMarket.util.LocalDateTimeAttributeConverter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,28 +17,25 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
-public class Cart {
+public class Cart implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
 
     @Column(name = "created_date")
-    @DateTimeFormat(pattern = "MM-dd-yyyy")
-    private LocalDate dateCreated;
+    @Convert(converter = LocalDateTimeAttributeConverter.class)
+    private LocalDateTime dateCreated;
 
-    @OneToOne
-    @JoinColumn(name="owner_id")
-    private Buyer owner;
+//    @OneToOne
+//    @JoinColumn(name="owner_id", referencedColumnName = "id")
+//    @JsonIgnore
+//    private Buyer
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
     private List<CartItem> items;
 
-    public Cart(Buyer owner){
-        this.owner = owner;
-        items = new ArrayList<>();
-    }
     public Cart addCartItem(CartItem cartItem){
+        if(items==null) items = new ArrayList<CartItem>();
         for (CartItem c : items){
             if (cartItem.getProduct() == c.getProduct()) {
                 cartItem.setQuantity(cartItem.getQuantity() + c.getQuantity());
@@ -51,6 +50,6 @@ public class Cart {
         return this;
     }
     public void removeCartItem(CartItem cartItem){
-        items.remove(cartItem);
+        if(items!=null) items.remove(cartItem);
     }
 }

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/orders")
 public class OrderController {
     @Autowired
     private OrderService orderService;
@@ -27,22 +27,16 @@ public class OrderController {
     @Autowired
     private BuyerService buyerService;
 
-    // place order after checkout
-    @PostMapping("/add/{buyerId}")
-    public Order placeOrder(@PathVariable Long buyerId) {
-//        String username = authentication.getPrincipal().toString();
-//        User user = ((MyUserDetails)userDetailsService.loadUserByUsername(username)).getUser();
-        Buyer buyer = buyerService.findById(buyerId);
+    @PostMapping
+    public Order placeOrder(Authentication auth) {
+        Buyer buyer = buyerService.getLoggedInBuyer(auth);
         return orderService.placeOrder(buyer);
     }
 
     // get all orders
-    @GetMapping("/user/{buyerId}")
-    public List<Order> getAllOrders(@PathVariable Long buyerId) {
-//        String username = authentication.getPrincipal().toString();
-//        User user = ((MyUserDetails)userDetailsService.loadUserByUsername(username)).getUser();
-//        Buyer buyer = buyerService.findByEmail(user.getEmail());
-        Buyer buyer = buyerService.findById(buyerId);
+    @GetMapping("")
+    public List<Order> getAllOrders(Authentication auth) {
+        Buyer buyer = buyerService.getLoggedInBuyer(auth);
         return orderService.listOrders(buyer);
     }
 
