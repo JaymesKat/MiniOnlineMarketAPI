@@ -19,4 +19,5 @@ public interface CartService {
     Cart removeItemFromCart(Cart cart, Long productId);
     Cart updateCart(Cart cart, UpdateCartDto cartDto);
     Cart getLoggedInUserCart(Authentication auth);
+    Cart addCart(AddToCartDto addToCartDto, Authentication auth);
 }

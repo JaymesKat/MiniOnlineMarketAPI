@@ -14,7 +14,7 @@ public interface OrderService {
 //    void deleteOrder(Long id);
 //    void shipOrder(Long id);
     boolean cancelOrder(Long orderId);
-    List<Order> findBuyerOrderHistory(Buyer buyer);
+//    List<Order> findBuyerOrderHistory(Buyer buyer);
     Order placeOrder(Buyer user);
     List<Order> listOrders(Buyer user);
     Order getOrder(Long orderId);

@@ -1,6 +1,7 @@
 package edu.miu.cs545.group1.MiniOnlineMarket.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,7 @@ public class CartItem {
 
     @ManyToOne
     @JoinColumn(name="cart_id")
+    @JsonIgnore
     private Cart cart;
 
     public CartItem(Product product, int quantity, Cart cart){

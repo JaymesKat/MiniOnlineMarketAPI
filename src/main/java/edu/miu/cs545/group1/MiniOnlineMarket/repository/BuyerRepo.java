@@ -11,4 +11,7 @@ public interface BuyerRepo extends JpaRepository<Buyer,Long> {
 
     @Query(value = "SELECT b FROM Buyer b WHERE b.email = :email")
     public Buyer findByEmail(String email);
+
+    @Query(value = "SELECT b FROM Buyer b WHERE b.user.id = :userId")
+    Buyer findByUser(Long userId);
 }

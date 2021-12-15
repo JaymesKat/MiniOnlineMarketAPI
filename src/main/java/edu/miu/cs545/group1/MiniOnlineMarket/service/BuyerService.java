@@ -16,4 +16,5 @@ public interface BuyerService {
     Order createOrder(Cart cart);
     List<Order> getBuyerOrders(Long id);
     public Buyer getLoggedInBuyer(Authentication auth);
+    Buyer save(Buyer buyer);
 }

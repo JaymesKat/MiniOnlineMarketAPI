@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Cart {
+public class Cart implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
@@ -25,19 +26,16 @@ public class Cart {
     @Convert(converter = LocalDateTimeAttributeConverter.class)
     private LocalDateTime dateCreated;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="owner_id")
-    @JsonIgnore
-    private Buyer owner;
+//    @OneToOne
+//    @JoinColumn(name="owner_id", referencedColumnName = "id")
+//    @JsonIgnore
+//    private Buyer
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
     private List<CartItem> items;
 
-    public Cart(Buyer owner){
-        this.owner = owner;
-        items = new ArrayList<>();
-    }
     public Cart addCartItem(CartItem cartItem){
+        if(items==null) items = new ArrayList<CartItem>();
         for (CartItem c : items){
             if (cartItem.getProduct() == c.getProduct()) {
                 cartItem.setQuantity(cartItem.getQuantity() + c.getQuantity());
@@ -52,6 +50,6 @@ public class Cart {
         return this;
     }
     public void removeCartItem(CartItem cartItem){
-        items.remove(cartItem);
+        if(items!=null) items.remove(cartItem);
     }
 }

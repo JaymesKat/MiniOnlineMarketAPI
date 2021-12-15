@@ -26,14 +26,14 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product findById(Long id) {
-        return productRepo.findById(id).get();
+        return productRepo.findById(id).orElse(null);
     }
 
     // we should check if the product is in one purchase
     // if yes we should not delete it
     @Override
     public void updateProduct(Long id, Product product) {
-        Product temp = productRepo.findById(id).orElse(null);
+        Product temp = findById(id);
         if(temp != null ){
             temp.setTitle(product.getTitle());
             temp.setDescription(product.getDescription());
