@@ -1,8 +1,10 @@
 package edu.miu.cs545.group1.MiniOnlineMarket.controller;
 
+import edu.miu.cs545.group1.MiniOnlineMarket.domain.Address;
 import edu.miu.cs545.group1.MiniOnlineMarket.domain.Buyer;
 import edu.miu.cs545.group1.MiniOnlineMarket.domain.Order;
 import edu.miu.cs545.group1.MiniOnlineMarket.domain.Seller;
+import edu.miu.cs545.group1.MiniOnlineMarket.dto.AddressDTO;
 import edu.miu.cs545.group1.MiniOnlineMarket.service.BuyerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -52,4 +54,29 @@ public class BuyerController {
         buyerService.unFollowSeller(buyerId, sellerId);
     }
 
+    //======================================Mapping for addresses...==========================================
+
+    @PostMapping("/{id}/addresses")
+    public void linkAddressesToBuyer(@PathVariable("id") Long buyerId, @RequestBody AddressDTO addresses){
+        buyerService.linkAddressesToBuyer(buyerId, addresses);
+    }
+
+    @GetMapping("/{id}/addresses")
+    public AddressDTO getAddresses(@PathVariable("id") Long buyerId){
+        Buyer buyer = buyerService.findById(buyerId);
+        AddressDTO addresses = new AddressDTO();
+        addresses.setBillingAddress(buyer.getBillingAddress());
+        addresses.setShippingAddress(buyer.getShippingAddress());
+        return addresses;
+    }
+
+    @PutMapping("/{id}/addresses/shipping")
+    public void updateShippingAddress(@PathVariable("id") Long buyerId, @RequestBody Address address){
+        buyerService.updateShippingAddress(buyerId, address);
+    }
+
+    @PutMapping("/{id}/addresses/billing")
+    public void updateBillingingAddress(@PathVariable("id") Long buyerId, @RequestBody Address address){
+        buyerService.updateBillingAddress(buyerId, address);
+    }
 }

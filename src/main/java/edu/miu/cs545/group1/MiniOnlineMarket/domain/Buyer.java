@@ -18,11 +18,11 @@ import java.util.List;
 @NoArgsConstructor
 public class Buyer extends Person implements Serializable {
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @Valid
     private Address shippingAddress;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @Valid
     private Address billingAddress;
 

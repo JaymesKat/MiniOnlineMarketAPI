@@ -2,6 +2,9 @@ package edu.miu.cs545.group1.MiniOnlineMarket.service.impl;
 
 import edu.miu.cs545.group1.MiniOnlineMarket.constants.ErrorMessages;
 import edu.miu.cs545.group1.MiniOnlineMarket.domain.*;
+import edu.miu.cs545.group1.MiniOnlineMarket.domain.*;
+import edu.miu.cs545.group1.MiniOnlineMarket.dto.AddressDTO;
+import edu.miu.cs545.group1.MiniOnlineMarket.repository.AddressRepo;
 import edu.miu.cs545.group1.MiniOnlineMarket.repository.BuyerRepo;
 import edu.miu.cs545.group1.MiniOnlineMarket.repository.OrderRepo;
 import edu.miu.cs545.group1.MiniOnlineMarket.repository.SellerRepo;
@@ -20,6 +23,8 @@ public class BuyerServiceImpl implements BuyerService {
     private BuyerRepo buyerRepo;
     private SellerRepo sellerRepo;
     private UserService userService;
+    @Autowired
+    private AddressRepo addressRepo;
     private OrderRepo orderRepo;
 
     @Autowired
@@ -27,6 +32,7 @@ public class BuyerServiceImpl implements BuyerService {
                             SellerRepo sellerRepo,UserService userService) {
         this.buyerRepo = buyerRepo;
         this.sellerRepo = sellerRepo;
+        this.orderRepo = orderRepo;
         this.userService = userService;
     }
 
@@ -97,5 +103,37 @@ public class BuyerServiceImpl implements BuyerService {
         Buyer buyer = findById(id);
         List<Order> orders = orderRepo.findAllByBuyerOrderByDateCreatedDesc(buyer);
         return orders;
+    }
+
+    //==================================Address management==========================================
+
+    @Override
+    public void linkAddressesToBuyer(Long buyerId, AddressDTO addresses) {
+        Buyer buyer = findById(buyerId);
+        buyer.setBillingAddress(addresses.getBillingAddress());
+        buyer.setShippingAddress(addresses.getShippingAddress());
+        buyerRepo.save(buyer);
+    }
+
+    @Override
+    public void updateShippingAddress(Long buyerId, Address address) {
+        Buyer buyer = findById(buyerId);
+        Address addressToUpdate = buyer.getShippingAddress();
+        addressToUpdate.setCity(address.getCity());
+        addressToUpdate.setState(address.getState());
+        addressToUpdate.setStreet(address.getStreet());
+        addressToUpdate.setZip(address.getZip());
+        addressRepo.save(addressToUpdate);
+    }
+
+    @Override
+    public void updateBillingAddress(Long buyerId, Address address) {
+        Buyer buyer = findById(buyerId);
+        Address addressToUpdate = buyer.getBillingAddress();;
+        addressToUpdate.setCity(address.getCity());
+        addressToUpdate.setState(address.getState());
+        addressToUpdate.setStreet(address.getStreet());
+        addressToUpdate.setZip(address.getZip());
+        addressRepo.save(addressToUpdate);
     }
 }
