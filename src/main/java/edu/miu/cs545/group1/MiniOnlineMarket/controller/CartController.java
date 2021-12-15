@@ -32,17 +32,13 @@ public class CartController {
 
     @GetMapping
     public ResponseEntity<Cart> getCart(Authentication auth){
-        User user = userService.getLoggedInUser(auth);
-        Buyer buyer = buyerService.findByUser(user);
-        Cart cart = cartService.findByOwner(buyer);
+        Cart cart = cartService.getLoggedInUserCart(auth);
         return new ResponseEntity<>(cart, HttpStatus.OK);
     }
 
     @PostMapping()
     public ResponseEntity<Cart> addToCart(@RequestBody AddToCartDto addToCartDto, Authentication auth) {
-        Cart cart = cartService.getLoggedInUserCart(auth);
-        Product product = productService.findById(addToCartDto.getProductId());
-        cart = cartService.addItemToCart(addToCartDto, cart, product);
+        Cart cart = cartService.addCart(addToCartDto, auth);
         return new ResponseEntity<>(cart, HttpStatus.OK);
     }
 

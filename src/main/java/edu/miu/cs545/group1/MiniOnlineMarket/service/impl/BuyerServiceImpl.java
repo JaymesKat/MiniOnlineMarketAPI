@@ -93,11 +93,6 @@ public class BuyerServiceImpl implements BuyerService {
     }
 
     @Override
-    public Order createOrder(Cart cart) {
-        return null;
-    }
-
-    @Override
     public List<Order> getBuyerOrders(Long id) {
         Buyer buyer = findById(id);
         List<Order> orders = orderRepo.findAllByBuyerOrderByDateCreatedDesc(buyer);
