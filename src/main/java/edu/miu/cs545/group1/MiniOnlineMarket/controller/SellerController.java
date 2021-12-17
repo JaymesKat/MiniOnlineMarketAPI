@@ -60,6 +60,12 @@ public class SellerController {
         return sellerService.getProducts(seller.getId());
     }
 
+    @GetMapping("/products/{productId}")
+    public Product getSingleProduct(@PathVariable long productId, Authentication auth){
+        Seller seller = sellerService.getLoggedInSeller(auth);
+        return sellerService.findProductById(seller, productId);
+    }
+
     @PutMapping("/products/{productId}")
     public void updateProduct(@RequestBody Product product,
     @PathVariable("productId") Long productId){
@@ -71,8 +77,9 @@ public class SellerController {
         productService.deleteProduct(productId);
     }
 
-    @PostMapping("/{sellerId}/products")
-    public void addProduct(@RequestBody Product product){
-        productService.addProduct(product);
+    @PostMapping("/products")
+    public void addProduct(@RequestBody Product product, Authentication auth){
+        Seller seller = sellerService.getLoggedInSeller(auth);
+        sellerService.addProduct(seller, product);
     }
 }

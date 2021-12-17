@@ -1,8 +1,6 @@
 package edu.miu.cs545.group1.MiniOnlineMarket.service.impl;
 
 import edu.miu.cs545.group1.MiniOnlineMarket.domain.*;
-import edu.miu.cs545.group1.MiniOnlineMarket.repository.ProductRepo;
-import edu.miu.cs545.group1.MiniOnlineMarket.repository.SaleRepo;
 import edu.miu.cs545.group1.MiniOnlineMarket.repository.SellerRepo;
 import edu.miu.cs545.group1.MiniOnlineMarket.service.ProductService;
 import edu.miu.cs545.group1.MiniOnlineMarket.service.SaleService;
@@ -75,5 +73,16 @@ public class SellerServiceImpl implements SellerService {
         User user = userService.getLoggedInUser(auth);
         Seller seller = findByUser(user);
         return seller;
+    }
+
+    @Override
+    public void addProduct(Seller seller, Product product) {
+        product.setSeller(seller);
+        productService.addProduct(product);
+    }
+
+    @Override
+    public Product findProductById(Seller seller, long productId) {
+        return productService.getProductForSeller(seller, productId);
     }
 }
