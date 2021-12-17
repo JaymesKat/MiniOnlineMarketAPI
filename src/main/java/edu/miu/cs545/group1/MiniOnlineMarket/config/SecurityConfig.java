@@ -57,6 +57,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                 .antMatchers(SecurityConstants.H2_CONSOLE_URL).permitAll()
                 .antMatchers(SecurityConstants.ADMIN_MANAGEMENT_ENDPOINTS).hasAuthority(SecurityConstants.ROLE_ADMIN)
                 .antMatchers(SecurityConstants.CART_ENDPOINTS).hasAuthority(SecurityConstants.ROLE_BUYER)
+                .antMatchers(SecurityConstants.SELLER_ENDPOINTS).hasAnyAuthority(SecurityConstants.ROLE_SELLER, SecurityConstants.ROLE_ADMIN)
                 .anyRequest()
                 .authenticated()
                 .and()

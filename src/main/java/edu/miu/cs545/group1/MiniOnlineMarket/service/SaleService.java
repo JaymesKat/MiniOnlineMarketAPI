@@ -9,4 +9,6 @@ public interface SaleService {
     Sale getSale(Long id);
     void updateSale(Sale sale);
     List<Sale> getAllSales();
+
+    List<Sale> getSellerSales(Long id);
 }

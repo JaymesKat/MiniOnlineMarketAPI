@@ -7,7 +7,9 @@ import edu.miu.cs545.group1.MiniOnlineMarket.repository.SellerRepo;
 import edu.miu.cs545.group1.MiniOnlineMarket.service.ProductService;
 import edu.miu.cs545.group1.MiniOnlineMarket.service.SaleService;
 import edu.miu.cs545.group1.MiniOnlineMarket.service.SellerService;
+import edu.miu.cs545.group1.MiniOnlineMarket.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,12 +25,18 @@ public class SellerServiceImpl implements SellerService {
     @Autowired
     ProductService productService;
 
+    @Autowired
+    UserService userService;
+
     @Override
     public List<Buyer> getFollowers(Long sellerId) {
         return sellerRepo.findById(sellerId).get().getFollowers();
     }
 
-
+    @Override
+    public Seller findByUser(User user) {
+        return sellerRepo.findByUser(user.getId());
+    }
 
     @Override
     public void changeSaleStatus(Long saleId, OrderStatus saleStatus) {
@@ -61,5 +69,11 @@ public class SellerServiceImpl implements SellerService {
     @Override
     public List<Product> getProducts(Long sellerId) {
         return getSeller(sellerId).getProducts();
+    }
+
+    public Seller getLoggedInSeller(Authentication auth) {
+        User user = userService.getLoggedInUser(auth);
+        Seller seller = findByUser(user);
+        return seller;
     }
 }
