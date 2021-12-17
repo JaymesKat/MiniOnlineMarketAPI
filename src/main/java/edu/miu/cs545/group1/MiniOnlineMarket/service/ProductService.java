@@ -1,6 +1,7 @@
 package edu.miu.cs545.group1.MiniOnlineMarket.service;
 
 import edu.miu.cs545.group1.MiniOnlineMarket.domain.Product;
+import edu.miu.cs545.group1.MiniOnlineMarket.domain.Seller;
 
 import java.util.List;
 
@@ -13,4 +14,6 @@ public interface ProductService {
     Double calcAvgRating(Long id);
     void decreaseQuantity(Long productId, Integer quantity);
     void increaseQuantity(Long productId, Integer quantity);
+
+    Product getProductForSeller(Seller seller, long productId);
 }

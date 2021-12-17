@@ -2,6 +2,7 @@ package edu.miu.cs545.group1.MiniOnlineMarket.service.impl;
 
 import edu.miu.cs545.group1.MiniOnlineMarket.domain.Product;
 import edu.miu.cs545.group1.MiniOnlineMarket.domain.ProductReview;
+import edu.miu.cs545.group1.MiniOnlineMarket.domain.Seller;
 import edu.miu.cs545.group1.MiniOnlineMarket.repository.ProductRepo;
 import edu.miu.cs545.group1.MiniOnlineMarket.repository.SaleRepo;
 import edu.miu.cs545.group1.MiniOnlineMarket.service.ProductService;
@@ -79,6 +80,12 @@ public class ProductServiceImpl implements ProductService {
         productToUpdate.setQuantity(currentQuantity + quantity);
         updateProduct(productToUpdate.getId(), productToUpdate);
     }
+
+    @Override
+    public Product getProductForSeller(Seller seller, long productId) {
+        return productRepo.findProductForSeller(seller.getId(), productId);
+    }
+
     @Override
     public void decreaseQuantity(Long productId, Integer quantity) {
         Product productToUpdate = productRepo.findById(productId).get();

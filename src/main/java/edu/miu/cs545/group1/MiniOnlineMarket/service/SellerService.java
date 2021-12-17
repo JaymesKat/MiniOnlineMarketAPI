@@ -14,4 +14,8 @@ public interface SellerService {
     List<Product> getProducts(Long sellerId);
     Seller findByUser(User user);
     Seller getLoggedInSeller(Authentication auth);
+
+    void addProduct(Seller seller, Product product);
+
+    Product findProductById(Seller sellerId, long productId);
 }
