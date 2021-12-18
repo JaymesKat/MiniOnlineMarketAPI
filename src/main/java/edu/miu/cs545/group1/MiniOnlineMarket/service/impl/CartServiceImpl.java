@@ -113,7 +113,6 @@ public class CartServiceImpl implements CartService {
     public Cart getLoggedInUserCart(Authentication auth) {
         Buyer buyer = buyerService.getLoggedInBuyer(auth);
         Cart cart = findByOwner(buyer);
-        System.out.println("cart: "+ cart.getId());
         if(cart==null) {
             cart = createCart(buyer);
         }

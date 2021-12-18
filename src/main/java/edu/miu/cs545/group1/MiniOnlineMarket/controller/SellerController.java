@@ -6,6 +6,7 @@ import edu.miu.cs545.group1.MiniOnlineMarket.service.ProductService;
 import edu.miu.cs545.group1.MiniOnlineMarket.service.SaleService;
 import edu.miu.cs545.group1.MiniOnlineMarket.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,44 +29,57 @@ public class SellerController {
         return sellerService.getAllSellers();
     }
 
-    @GetMapping("/{id}")
-    public Seller getSeller(@PathVariable("id") Long sellerId){
-       return sellerService.getSeller(sellerId);
+    @GetMapping("/details")
+    public Seller getSeller(Authentication auth){
+        Seller seller = sellerService.getLoggedInSeller(auth);
+        return sellerService.getSeller(seller.getId());
     }
     @PostMapping
     public void addSeller(@RequestBody Seller seller){
         sellerService.addSeller(seller);
     }
-    @GetMapping("/{id}/sales")
-    public List<Sale> getAllSalesForSeller(@PathVariable("id") Long sellerId){
-        return saleService.getAllSales();
+
+    @GetMapping("/sales")
+    public List<Sale> getAllSalesForSeller(Authentication auth){
+        Seller seller = sellerService.getLoggedInSeller(auth);
+        return saleService.getSellerSales(seller.getId());
     }
-    @GetMapping("/{id}/followers")
-    public List<Buyer> getFollowers(@PathVariable("id") Long sellerId){
-        return sellerService.getFollowers(sellerId);
+    @GetMapping("/followers")
+    public List<Buyer> getFollowers(Authentication auth){
+        Seller seller = sellerService.getLoggedInSeller(auth);
+        return sellerService.getFollowers(seller.getId());
     }
-    @PatchMapping ("/{sellerId}/sales/{saleId}")
+    @PatchMapping ("/sales/{saleId}")
     public void changeSaleStatus(@RequestBody SalesDTO status,
                                  @PathVariable("saleId") Long saleId){
         sellerService.changeSaleStatus(saleId,OrderStatus.valueOf(status.getOrderStatus()));
     }
-    @GetMapping("/{sellerId}/products")
-    public List<Product> getAllSellerProducts(@PathVariable("sellerId") Long sellerId){
-        return sellerService.getProducts(sellerId);
+    @GetMapping("/products")
+    public List<Product> getAllSellerProducts(Authentication auth){
+        Seller seller = sellerService.getLoggedInSeller(auth);
+        return sellerService.getProducts(seller.getId());
     }
 
-    @PutMapping("/{sellerId}/products/{productId}")
+    @GetMapping("/products/{productId}")
+    public Product getSingleProduct(@PathVariable long productId, Authentication auth){
+        Seller seller = sellerService.getLoggedInSeller(auth);
+        return sellerService.findProductById(seller, productId);
+    }
+
+    @PutMapping("/products/{productId}")
     public void updateProduct(@RequestBody Product product,
     @PathVariable("productId") Long productId){
         productService.updateProduct(productId, product);
     }
 
-    @DeleteMapping("/{sellerId}/products/{productId}")
+    @DeleteMapping("/products/{productId}")
     public void deleteProduct(@PathVariable("productId") Long productId){
         productService.deleteProduct(productId);
     }
-    @PostMapping("/{sellerId}/products")
-    public void addProduct(@RequestBody Product product){
-        productService.addProduct(product);
+
+    @PostMapping("/products")
+    public void addProduct(@RequestBody Product product, Authentication auth){
+        Seller seller = sellerService.getLoggedInSeller(auth);
+        sellerService.addProduct(seller, product);
     }
 }
